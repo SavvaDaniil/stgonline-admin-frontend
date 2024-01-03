@@ -1,0 +1,78 @@
+
+<app-system-loading-page *ngIf="isLoading"></app-system-loading-page>
+<app-system-error-page *ngIf="isError" (tryAgain)="listLites()"></app-system-error-page>
+
+<div class="page row teachers">
+
+    <div *ngIf="!isLoading && !isError && (teacherPreviewViewModels === null || (teacherPreviewViewModels !== null && teacherPreviewViewModels.length === 0))" class="col-12">
+        <p class="text-center">- записей не найдено -</p>
+    </div>
+
+    <div *ngIf="!isLoading && !isError && teacherPreviewViewModels !== null && teacherPreviewViewModels.length > 0" class="col-12">
+        <button type="button" class="btn btn-secondary" [disabled]="isLoading" data-bs-toggle="modal" data-bs-target="#modalNewTeacher">Добавить</button>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ФИО</th>
+                    <th>Отображать?</th>
+                    <th>Является наставником?</th>
+                    <th>Очередность</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let teacherPreviewViewModel of teacherPreviewViewModels">
+                    <td>{{ teacherPreviewViewModel.id }}</td>
+                    <td>{{ teacherPreviewViewModel.name }}</td>
+                    <td>
+                        <p *ngIf="teacherPreviewViewModel.is_active" class="success">Да</p>
+                        <p *ngIf="!teacherPreviewViewModel.is_active" class="warning">Нет</p>
+                    </td>
+                    <td>
+                        <p *ngIf="teacherPreviewViewModel.is_curator" class="success">Да</p>
+                        <p *ngIf="!teacherPreviewViewModel.is_curator" class="warning">Нет</p>
+                    </td>
+                    <td>{{ teacherPreviewViewModel.order_in_list }}</td>
+                    <td>
+                        <a routerLink="/teacher/{{ teacherPreviewViewModel.id }}" target="_blank">
+                            <button type="button" class="btn btn-info btn-sm">Редактировать</button>
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm">Удалить</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="modal fade" id="modalNewTeacher" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Новый преподаватель</h4>
+                <button type="button" #btnModalNewTeacherClose class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form >
+                    <div>
+                        <label class="form-label" for="formNewTeacherFIO">ФИО (обязательно)</label>
+                        <input type="text" class="form-control" placeholder="ФИО" maxlength="216" (keypress)="clearWarning();"
+                        (change)="setNewTeacherName($event)"
+                        value="{{ newTeacherName }}" />
+                    </div>
+                    <p class="warning">{{ warning }}</p>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" (click)="addTeacher()" [disabled]="isAdding">Добавить</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+
+        </div>
+    </div>
+</div>

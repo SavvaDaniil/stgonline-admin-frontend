@@ -1,0 +1,64 @@
+<app-system-loading-page *ngIf="isLoading"></app-system-loading-page>
+<app-system-error-page *ngIf="isError" (tryAgain)="listCourseDays()"></app-system-error-page>
+
+<div *ngIf="!isLoading && !isError" class="course-days">
+    
+    <button class="btn btn-info" type="button" [disabled]="isLoading || isError || isCourseDayOrCourseLessonAddOrDeleting" (click)="courseDayAdd()">Добавить день</button>
+
+    <app-course-edit-tab-course-day-edit *ngFor="let courseDayInfoViewModel of courseDayInfoViewModels; index as i" 
+    [courseDayInfoViewModel]="courseDayInfoViewModel" 
+    [course_day_index]="i"
+    
+    ...
+    (courseLessonDeletePrepareEmit)="courseLessonDeletePrepare($event)"
+    >
+    </app-course-edit-tab-course-day-edit>
+</div>
+
+
+<button class="btn btn-danger hide" type="button" #btnModalDayDeleteOpen data-bs-toggle="modal" data-bs-target="#modalDayDelete"></button>
+<div class="modal fade" id="modalDayDelete" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Удалить день</h4>
+                <button type="button" #btnModalDayDeleteClose class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                Вы уверены, что хотите удалить день курса?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" [disabled]="isCourseDayOrCourseLessonAddOrDeleting" (click)="courseDayDelete()">Удалить</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" [disabled]="isCourseDayOrCourseLessonAddOrDeleting">Закрыть</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<button class="btn btn-danger hide" type="button" #btnModalCourseLessonDeleteOpen data-bs-toggle="modal" data-bs-target="#modalCourseLessonDelete"></button>
+<div class="modal fade" id="modalCourseLessonDelete" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Удалить урок</h4>
+                <button type="button" #btnModalCourseLessonDeleteClose class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                Вы уверены, что хотите удалить урок курса?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" [disabled]="isCourseDayOrCourseLessonAddOrDeleting" (click)="courseLessonDelete()">Удалить</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" [disabled]="isCourseDayOrCourseLessonAddOrDeleting">Закрыть</button>
+            </div>
+
+        </div>
+    </div>
+</div>

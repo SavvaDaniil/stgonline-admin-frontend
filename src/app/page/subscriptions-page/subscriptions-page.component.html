@@ -1,0 +1,44 @@
+
+<app-system-loading-page *ngIf="isLoading"></app-system-loading-page>
+<app-system-error-page *ngIf="isError" (tryAgain)="listLites()"></app-system-error-page>
+
+<div class="page row subscriptions">
+
+    <div *ngIf="!isLoading && !isError && (subscriptionLiteViewModels === null || (subscriptionLiteViewModels !== null && subscriptionLiteViewModels.length === 0))" class="col-12">
+        <p class="text-center">- записей не найдено -</p>
+    </div>
+
+    <div *ngIf="!isLoading && !isError && subscriptionLiteViewModels !== null && subscriptionLiteViewModels.length > 0" class="col-12">
+        <!--<button type="button" class="btn btn-secondary" [disabled]="isLoading">Добавить</button>-->
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Наименование</th>
+                    <th>Цена</th>
+                    <th>Количество дней</th>
+                    <th>Отображать?</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let subscriptionLiteViewModel of subscriptionLiteViewModels">
+                    <td>{{ subscriptionLiteViewModel.id }}</td>
+                    <td>{{ subscriptionLiteViewModel.name }}</td>
+                    <td>{{ subscriptionLiteViewModel.price }}</td>
+                    <td>{{ subscriptionLiteViewModel.days }}</td>
+                    <td>
+                        <p *ngIf="subscriptionLiteViewModel.is_active" class="success">Да</p>
+                        <p *ngIf="!subscriptionLiteViewModel.is_active" class="warning">Нет</p>
+                    </td>
+                    <td>
+                        <a routerLink="/subscription/{{ subscriptionLiteViewModel.id }}">
+                            <button type="button" class="btn btn-info btn-sm">Редактировать</button>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

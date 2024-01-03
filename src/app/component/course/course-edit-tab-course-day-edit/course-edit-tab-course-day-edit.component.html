@@ -1,0 +1,45 @@
+
+
+<div class="row" *ngIf="courseDayInfoViewModel !== null">
+    <div class="col-6">
+        <form [formGroup]="courseDayForm" (keypress)="clearWarning()">
+            <div class="form-group">
+                <label class="control-label">{{ course_day_index + 1 }}. День</label>
+                <input type="text" class="form-control" formControlName="name" />
+
+                <div class="row">
+                    <div class="col-6" style="padding: 0;">
+                        <button type="button" class="btn btn-sm btn-success" [disabled]="isLoading" (click)="update()">
+                            Сохранить наименование
+                        </button>
+                        <p class="warning">{{ warning }}</p>
+                        <p class="success">{{ success }}</p>
+                    </div>
+                    <div class="col-6 text-right" style="padding: 0;">
+                        <button type="button" class="btn btn-sm btn-danger" [disabled]="isLoading" data-toggle="modal" data-target="#modalDayDelete" (click)="courseDayDeletePrepare()">
+                            Удалить день
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-6">
+        <app-course-edit-tab-course-lesson-edit 
+        *ngFor="let courseLessonInfoViewModel of courseDayInfoViewModel.courseLessonInfoViewModels; index as course_lesson_index"
+        [courseLessonInfoViewModel]="courseLessonInfoViewModel"
+        [course_lesson_index]="course_lesson_index"
+        
+        ...
+        (courseLessonDeletePrepareEmit)="courseLessonDeletePrepare($event)"
+        >
+        </app-course-edit-tab-course-lesson-edit>
+
+        <button type="button" class="btn btn-info" style="margin-top:35px;" (click)="courseLessonAdd()">
+            Добавить урок
+        </button>
+    </div>
+    <div class="col-12">
+        <hr />
+    </div>
+</div>

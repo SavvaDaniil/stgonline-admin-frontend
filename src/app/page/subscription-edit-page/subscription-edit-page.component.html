@@ -1,0 +1,45 @@
+
+<app-system-loading-page *ngIf="isLoading"></app-system-loading-page>
+<app-system-error-page *ngIf="isError" (tryAgain)="getForEdit()"></app-system-error-page>
+
+<div class="page row subscription" *ngIf="!isLoading && !isError">
+    <div class="col-12">
+        <a routerLink="/subscriptions">
+            <button type="button" class="btn btn-secondary">Вернуться</button>
+        </a>
+
+        <form [formGroup]="subscriptionForm" (keypress)="clearWarning()">
+            <div>
+                <label class="form-label" for="formProfileUsername">ID</label>
+                <input type="number"[readOnly]="true" class="form-control" formControlName="id" />
+            </div>
+            <div>
+                <label class="form-label">Наименование</label>
+                <input maxlength="216" type="text" class="form-control" formControlName="name" />
+            </div>
+            <div>
+                <label class="form-label">Стоимость</label>
+                <input type="number" class="form-control" formControlName="price" />
+            </div>
+            <div>
+                <label class="form-label">Дней</label>
+                <input type="number" class="form-control" formControlName="days" />
+            </div>
+            <div>
+                <label class="form-label">Отображать?</label>
+                <select formControlName="is_active" class="form-control">
+                    <option [ngValue]="false" [selected]="!subscriptionForm.value.is_active">Нет</option>
+                    <option [ngValue]="true" [selected]="subscriptionForm.value.is_active">Да</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label">Порядок отображания (чем больше, тем первее)</label>
+                <input type="number" class="form-control" formControlName="order_in_list" />
+            </div>
+
+            <button type="button" class="btn btn-success" [disabled]="isSaving" (click)="update()">Сохранить</button>
+            <p class="warning">{{ warning }}</p>
+            <p class="success">{{ success }}</p>
+        </form>
+    </div>
+</div>

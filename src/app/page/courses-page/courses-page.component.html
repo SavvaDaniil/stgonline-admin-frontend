@@ -1,0 +1,44 @@
+
+<app-system-loading-page *ngIf="isLoading"></app-system-loading-page>
+<app-system-error-page *ngIf="isError" (tryAgain)="listMicros()"></app-system-error-page>
+
+<div class="page row lessons">
+
+    <div *ngIf="!isLoading && !isError && (courseMicroViewModels === null || (courseMicroViewModels !== null && courseMicroViewModels.length === 0))" class="col-12">
+        <p class="text-center">- записей не найдено -</p>
+    </div>
+
+    <div *ngIf="!isLoading && !isError && courseMicroViewModels !== null && courseMicroViewModels.length > 0" class="col-12">
+        <button type="button" class="btn btn-secondary" [disabled]="isLoading" data-bs-toggle="modal" data-bs-target="#modalNewCourse">Добавить</button>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Наименование</th>
+                    <th>Доступность</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let courseMicroViewModel of courseMicroViewModels">
+                    <td>{{ courseMicroViewModel.id }}</td>
+                    <td>
+                        <p>{{ courseMicroViewModel.name }}</p>
+                    </td>
+                    <td>
+                        <p *ngIf="courseMicroViewModel.active == 2" class="status-warning">Приватный</p>
+                        <p *ngIf="courseMicroViewModel.active == 1" class="status-success">Публичный</p>
+                        <p *ngIf="courseMicroViewModel.active == 0" class="status-danger">Закрыто</p>
+                    </td>
+                    <td>
+                        <a routerLink="/course/{{ courseMicroViewModel.id }}" target="_blank">
+                            <button type="button" class="btn btn-info btn-sm">Редактировать</button>
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm">Удалить</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

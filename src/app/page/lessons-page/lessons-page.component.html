@@ -1,0 +1,52 @@
+
+<app-system-loading-page *ngIf="isLoading"></app-system-loading-page>
+<app-system-error-page *ngIf="isError" (tryAgain)="listMicros()"></app-system-error-page>
+
+<div class="page row lessons">
+
+    <div *ngIf="!isLoading && !isError && (lessonMicroViewModels === null || (lessonMicroViewModels !== null && lessonMicroViewModels.length === 0))" class="col-12">
+        <p class="text-center">- записей не найдено -</p>
+    </div>
+
+    <div *ngIf="!isLoading && !isError && lessonMicroViewModels !== null && lessonMicroViewModels.length > 0" class="col-12">
+        <button type="button" class="btn btn-secondary" [disabled]="isLoading" data-bs-toggle="modal" data-bs-target="#modalNewLesson">Добавить</button>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Наименование</th>
+                    <th>Доступность</th>
+                    <th>Отображать в каталоге пользователям?</th>
+                    <th>Очередность</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let lessonMicroViewModel of lessonMicroViewModels">
+                    <td>{{ lessonMicroViewModel.id }}</td>
+                    <td>
+                        <p>{{ lessonMicroViewModel.name }}</p>
+                        <img *ngIf="lessonMicroViewModel.poster_src !== null && lessonMicroViewModel.poster_src !== ''" class="img-fluid" alt="poster" src="{{ baseDomain + lessonMicroViewModel.poster_src }}" />
+                    </td>
+                    <td>
+                        <p *ngIf="lessonMicroViewModel.active == 2" class="status-warning">Приватный</p>
+                        <p *ngIf="lessonMicroViewModel.active == 1" class="status-success">Публичный</p>
+                        <p *ngIf="lessonMicroViewModel.active == 0" class="status-danger">Закрыто</p>
+                    </td>
+                    <td>
+                        <p *ngIf="lessonMicroViewModel.is_visible" class="success">Да</p>
+                        <p *ngIf="!lessonMicroViewModel.is_visible" class="warning">Нет</p>
+                    </td>
+                    <td>{{ lessonMicroViewModel.order_in_list }}</td>
+                    <td>
+                        <a routerLink="/lesson/{{ lessonMicroViewModel.id }}" target="_blank">
+                            <button type="button" class="btn btn-info btn-sm">Редактировать</button>
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm">Удалить</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

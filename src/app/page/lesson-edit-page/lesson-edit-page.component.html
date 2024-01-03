@@ -1,0 +1,166 @@
+<app-system-loading-page *ngIf="isLoading"></app-system-loading-page>
+<app-system-error-page *ngIf="isError" (tryAgain)="getForEdit()"></app-system-error-page>
+
+
+<div class="page row lesson" *ngIf="!isLoading && !isError">
+    <div class="col-12">
+
+        <form [formGroup]="lessonForm" (keypress)="clearWarning()">
+            
+            <div class="row">
+                <label class="form-label col-12" for="posterSrc">Постер</label>
+                <div class="col-12" *ngIf="lessonForm.value.poster_src !== null && lessonForm.value.poster_src !== ''">
+                    <img src="{{ baseDomain + lessonForm.value.poster_src }}" 
+                    class="img-fluid" alt="poster"
+                    />
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-danger" type="button" *ngIf="lessonForm.value.poster_src !== null && lessonForm.value.poster_src !== ''" data-bs-toggle="modal" data-bs-target="#modalLessonPosterDelete">
+                        Удалить
+                    </button>
+                    <br />
+                    <input type="file" name="pos" accept="image/*" (change)="setPoster($event)" />
+                </div>
+                
+            </div>
+
+            <hr />
+
+            <div>
+                <label class="form-label" for="formProfileUsername">ID</label>
+                <input type="number" [readOnly]="true" class="form-control" formControlName="id" />
+            </div>
+            
+            <div>
+                <label class="form-label" for="name">Наименование:</label>
+                <input type="text" class="form-control" formControlName="name" />
+            </div>
+            
+            <div>
+                <label class="form-label" for="meta_keywords">Тэг meta keywords:</label>
+                <textarea class="form-control" formControlName="meta_keywords"></textarea>
+            </div>
+            
+            <div>
+                <label class="form-label" for="meta_description">Тэг meta description:</label>
+                <textarea class="form-control" formControlName="meta_description"></textarea>
+            </div>
+            
+            <div>
+                <label class="form-label" for="short_name">Короткое наименование на картинке:</label>
+                <input type="text" class="form-control" formControlName="short_name" />
+            </div>
+            
+            <div>
+                <label class="form-label" for="music_name">Музыка:</label>
+                <input type="text" class="form-control" formControlName="music_name" />
+            </div>
+            
+            <div>
+                <label class="form-label" for="teaser_src">Тизер (загрузка только через FTP):</label>
+                <input type="text" class="form-control" formControlName="teaser_src" [readOnly]="true" />
+            </div>
+            
+            <div>
+                <label class="form-label" for="demo_src">Путь к демо на CDN (загрузка только через FTP):</label>
+                <input type="text" class="form-control" formControlName="demo_src" [readOnly]="true" />
+            </div>
+
+            <div>
+                <label class="form-label" for="active">Доступность</label>
+                <select class="form-control" formControlName="active">
+                    <option [ngValue]="0" [selected]="lessonForm.value.active == 0">Закрытый</option>
+                    <option [ngValue]="1" [selected]="lessonForm.value.active == 1">Публичный</option>
+                    <option [ngValue]="2" [selected]="lessonForm.value.active == 2">Приватный</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="form-label" for="is_visible">Отображать в каталоге пользователям?</label>
+                <select class="form-control" formControlName="is_visible">
+                    <option [ngValue]="false" [selected]="!lessonForm.value.is_visible">Нет</option>
+                    <option [ngValue]="true" [selected]="lessonForm.value.is_visible">Да</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="form-label" for="days">Дней доступа при оплате только урока:</label>
+                <input type="number" class="form-control" formControlName="days" />
+            </div>
+            
+            <div>
+                <label class="form-label" for="price">Стоимость</label>
+                <input type="number" class="form-control" formControlName="price" />
+            </div>
+            
+            <div>
+                <label class="form-label" for="video_hash_path">Путь к playlist.m3u8 на CDN (загрузка только через FTP):</label>
+                <input type="text" class="form-control" formControlName="video_hash_path" [readOnly]="true" />
+            </div>
+            
+            <div>
+                <label class="form-label" for="video_duration">Длительность видео в секундах</label>
+                <input type="number" class="form-control" formControlName="video_duration" [readOnly]="true" />
+            </div>
+
+
+            <div>
+                <label class="form-label" for="lesson_type_id">Тип урока</label>
+                <select class="form-control" formControlName="lesson_type_id">
+                    <option *ngFor="let lessonTypeMicroViewModel of lessonForm.value.lessonTypeMicroViewModels" [ngValue]="lessonTypeMicroViewModel.id" [selected]="lessonTypeMicroViewModel.id == lessonForm.value.lesson_type_id">
+                        {{ lessonTypeMicroViewModel.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label class="form-label" for="teacher_id">Преподаватель</label>
+                <select class="form-control" formControlName="teacher_id">
+                    <option *ngFor="let teacherMicroViewModel of lessonForm.value.teacherMicroViewModels" [ngValue]="teacherMicroViewModel.id" [selected]="teacherMicroViewModel.id == lessonForm.value.teacher_id">
+                        {{ teacherMicroViewModel.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label class="form-label" for="style_id">Стиль</label>
+                <select class="form-control" formControlName="style_id">
+                    <option *ngFor="let styleMicroViewModel of lessonForm.value.styleMicroViewModels" [ngValue]="styleMicroViewModel.id" [selected]="styleMicroViewModel.id == lessonForm.value.style_id">
+                        {{ styleMicroViewModel.name }}
+                    </option>
+                </select>
+            </div>
+
+
+
+            <hr />
+
+            <button type="button" class="btn btn-success" [disabled]="isSaving" (click)="update()">Сохранить</button>
+            <p class="warning">{{ warning }}</p>
+            <p class="success">{{ success }}</p>
+        </form>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalLessonPosterDelete" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Удалить постер</h4>
+                <button type="button" #btnModalLessonPosterDeleteClose class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                Вы уверены, что хотите удалить постер урока?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" [disabled]="isPosterDeleting" (click)="posterDelete()">Удалить</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+
+        </div>
+    </div>
+</div>

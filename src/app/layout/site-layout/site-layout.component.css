@@ -1,0 +1,78 @@
+
+.header {
+    border-bottom: 1px solid #737373;
+    height: 60px;
+}
+.header p.position {
+    font-size: 12px;
+}
+.header .left-panel {
+    border-right: 1px solid #737373;
+    float: left;
+    width: 230px;
+    height: 60px;
+}
+.header .left-panel .short-info {
+    margin: 15px 25px;
+}
+.header .left-panel img {
+    max-height: 30px;
+    margin: 15px 25px;
+}
+
+.header .header-data {
+    margin-left: 230px;
+}
+.header .header-data h3 {
+    padding-top:15px;
+    font-weight: 400;
+    margin-left: 15px;
+}
+.header .header-data .logout {
+    text-align: right;
+    padding-top: 15px;
+}
+
+.menu {
+    border-right: 1px solid #737373;
+    position: absolute;
+    width: 230px;
+    height: 100%;
+}
+.menu .title p {
+    margin-left: 25px;
+    font-size: 12px;
+    padding:8px 0;
+    color: #737373;
+    text-transform: uppercase;
+}
+.menu ul {
+    list-style: none;
+    padding-left: 0;
+}
+.menu ul li a {
+    text-decoration: none;
+    color:#f5f5f5;
+    padding:6px 15px;
+    display: block;
+    border-bottom: 1px solid #737373;
+}
+.menu ul li a.active {
+    background-color: #000;
+}
+.menu ul li a.active {
+    border-bottom: 1px solid #000;
+}
+.menu ul li:hover {
+    background-color: #402D2D;
+}
+.menu ul li a i {
+    margin-right: 4px;
+    font-size: 14px;
+}
+
+
+.main {
+    margin-left: 230px;
+    padding:15px;
+}

@@ -1,0 +1,10 @@
+
+.page.subscription form {
+    margin-top: 15px;
+}
+.page.subscription input, .page.subscription select {
+    margin-bottom: 15px;
+}
+.page.subscription .warning {
+    margin-top: 15px;
+}

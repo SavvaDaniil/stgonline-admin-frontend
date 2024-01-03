@@ -1,0 +1,103 @@
+<app-system-loading-page *ngIf="isLoading"></app-system-loading-page>
+<app-system-error-page *ngIf="isError" (tryAgain)="getEdit()"></app-system-error-page>
+
+<div class="page row statement" *ngIf="!isLoading && !isError && statementEditViewModel !== null">
+    <div class="col-12" style="padding: 0;">
+
+        <form [formGroup]="statementForm" (keypress)="clearWarning()">
+
+            <div class="form-group">
+                <label class="form-label" for="id">ID</label>
+                <input type="number" [readOnly]="true" class="form-control" formControlName="id" />
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Пользователь:</label>
+                <input *ngIf="statementEditViewModel.userMicroViewModel !== null" type="text" [readOnly]="true" class="form-control" value="{{ statementEditViewModel.userMicroViewModel.id }} - {{ statementEditViewModel.userMicroViewModel.username }}" />
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Дата заявления:</label>
+                <input type="text" [readOnly]="true" class="form-control" [value]="statementEditViewModel.date_of_add" />
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Тариф:</label>
+                <input type="text" *ngIf="statementEditViewModel.is_need_curator === 1" [readOnly]="true" class="form-control" value="Тариф “Базовый”" />
+                <input type="text" *ngIf="statementEditViewModel.is_need_curator === 2" [readOnly]="true" class="form-control" value="Тариф “Продвинутый”" />
+                <input type="text" *ngIf="statementEditViewModel.is_need_curator === 3" [readOnly]="true" class="form-control" value="Тариф “Углубленный”" />
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Ваш танцевальный стаж?:</label>
+                <input type="text" *ngIf="statementEditViewModel.experience === 0" [readOnly]="true" class="form-control" value="" />
+                <input type="text" *ngIf="statementEditViewModel.experience === 1" [readOnly]="true" class="form-control" value="В первый раз (никогда раньше не танцевали)" />
+                <input type="text" *ngIf="statementEditViewModel.experience === 2" [readOnly]="true" class="form-control" value="Начинающий (брали несколько классов и понимаете основы)" />
+                <input type="text" *ngIf="statementEditViewModel.experience === 3" [readOnly]="true" class="form-control" value="Продолжающие (тацуете регулярно, хочу углубить свои знания)" />
+                <input type="text" *ngIf="statementEditViewModel.experience === 4" [readOnly]="true" class="form-control" value="Профи (у вас большой опыт, просто хотите что-то новое)" />
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Что вы ожидаете или хотите получить от занятий на данной платформе?:</label>
+                <input type="text" *ngIf="statementEditViewModel.expectations === 0" [readOnly]="true" class="form-control" value="" />
+                <input type="text" *ngIf="statementEditViewModel.expectations === 1" [readOnly]="true" class="form-control" value="Хочу изучить/повторить базу" />
+                <input type="text" *ngIf="statementEditViewModel.expectations === 2" [readOnly]="true" class="form-control" value="Хочу научиться фристайлить" />
+                <input type="text" *ngIf="statementEditViewModel.expectations === 3" [readOnly]="true" class="form-control" value="Хочу выучить хореографии" />
+                <input type="text" *ngIf="statementEditViewModel.expectations === 4" [readOnly]="true" class="form-control" value="Хочу стать увереннее на танцевальных площадках" />
+                <input type="text" *ngIf="statementEditViewModel.expectations === 5" [readOnly]="true" class="form-control" value="Хочу похудеть, улучшить здоровье" />
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Сколько вы сможете уделять времени на занятия в день?:</label>
+                <input type="text" *ngIf="statementEditViewModel.expected_time_for_lessons === 0" [readOnly]="true" class="form-control" value="" />
+                <input type="text" *ngIf="statementEditViewModel.expected_time_for_lessons === 1" [readOnly]="true" class="form-control" value="15-45 минут" />
+                <input type="text" *ngIf="statementEditViewModel.expected_time_for_lessons === 2" [readOnly]="true" class="form-control" value="Больше 45 минут" />
+                <input type="text" *ngIf="statementEditViewModel.expected_time_for_lessons === 3" [readOnly]="true" class="form-control" value="Готов тренироваться весь день" />
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Кто ваши кумиры в танцевальном мире?:</label>
+                <textarea class="form-control" rows="5" [readOnly]="true">{{ statementEditViewModel.idols }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Ссылка на видео 1:</label>
+                <input type="text" [readOnly]="true" class="form-control" [value]="statementEditViewModel.link1" />
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Ссылка на видео 2:</label>
+                <input type="text" [readOnly]="true" class="form-control" [value]="statementEditViewModel.link2" />
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Ссылка на видео 3:</label>
+                <input type="text" [readOnly]="true" class="form-control" [value]="statementEditViewModel.link3" />
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Желаемый наставник:</label>
+                <select class="form-control" [disabled]="true">
+                    <option *ngFor="let teacherMicroViewModel of teacherMicroViewModels" [ngValue]="teacherMicroViewModel.id" [selected]="teacherMicroViewModel.id == statementEditViewModel.teacher_desired_id">
+                        {{ teacherMicroViewModel.id }} - {{ teacherMicroViewModel.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="teacher_id">Назначенный преподаватель</label>
+                <select class="form-control" formControlName="teacher_id">
+                    <option *ngFor="let teacherMicroViewModel of teacherMicroViewModels" [ngValue]="teacherMicroViewModel.id" [selected]="teacherMicroViewModel.id === statementForm.value.teacher_id">
+                        {{ teacherMicroViewModel.id }} - {{ teacherMicroViewModel.name }}
+                    </option>
+                </select>
+            </div>
+
+            <hr />
+
+            <button type="button" class="btn btn-success" [disabled]="isSaving" (click)="update()">Сохранить</button>
+            <p class="warning">{{ warning }}</p>
+            <p class="success">{{ success }}</p>
+        </form>
+    </div>
+</div>

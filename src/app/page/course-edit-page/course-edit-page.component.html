@@ -1,0 +1,149 @@
+<app-system-loading-page *ngIf="isLoading"></app-system-loading-page>
+<app-system-error-page *ngIf="isError" (tryAgain)="getForEdit()"></app-system-error-page>
+
+
+<div class="page row course" *ngIf="!isLoading && !isError">
+    <div class="col-12">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Общая информация</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="course-content-tab" data-bs-toggle="tab" data-bs-target="#course-content" type="button" role="tab" aria-controls="course-content" aria-selected="false" (click)="initListCourseDays()">Содержание курса</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <form [formGroup]="courseForm" (keypress)="clearWarning()" onchange="clearWarning()">
+                
+                    <div class="row">
+                        <label class="form-label col-12" for="posterSrc">Постер</label>
+                        <div class="col-12" *ngIf="courseForm.value.poster_src !== null && courseForm.value.poster_src !== ''">
+                            <img src="{{ baseDomain + courseForm.value.poster_src }}" 
+                            class="img-fluid" alt="poster"
+                            />
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-danger" type="button" *ngIf="courseForm.value.poster_src !== null && courseForm.value.poster_src !== ''" data-bs-toggle="modal" data-bs-target="#modalCoursePosterDelete">
+                                Удалить
+                            </button>
+                            <br />
+                            <input type="file" name="pos" accept="image/*" (change)="setPoster($event)" />
+                        </div>
+                        
+                    </div>
+        
+                    <hr />
+        
+                    <div>
+                        <label class="form-label" for="id">ID</label>
+                        <input type="number" [readOnly]="true" class="form-control" formControlName="id" />
+                    </div>
+                    
+                    <div>
+                        <label class="form-label" for="name">Наименование:</label>
+                        <input type="text" class="form-control" formControlName="name" />
+                    </div>
+                    
+                    <div>
+                        <label class="form-label" for="meta_keywords">Тэг meta keywords:</label>
+                        <textarea class="form-control" formControlName="meta_keywords"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label" for="meta_description">Тэг meta description:</label>
+                        <textarea class="form-control" formControlName="meta_description"></textarea>
+                    </div>
+        
+                    <div>
+                        <label class="form-label" for="active">Доступность</label>
+                        <select class="form-control" formControlName="active">
+                            <option [ngValue]="0" [selected]="courseForm.value.active == 0">Закрытый</option>
+                            <option [ngValue]="1" [selected]="courseForm.value.active == 1">Публичный</option>
+                            <option [ngValue]="2" [selected]="courseForm.value.active == 2">Приватный</option>
+                        </select>
+                    </div>
+        
+                    <div>
+                        <label class="form-label" for="status_of_could_be_purchased_blank0_only_chat2_blank_or_chat3">Варианты покупки курса</label>
+                        <select class="form-control" formControlName="status_of_could_be_purchased_blank0_only_chat2_blank_or_chat3">
+                            <option [ngValue]="0" [selected]="courseForm.value.status_of_could_be_purchased_blank0_only_chat2_blank_or_chat3 == 0">Без чата</option>
+                            <option [ngValue]="2" [selected]="courseForm.value.status_of_could_be_purchased_blank0_only_chat2_blank_or_chat3 == 2">Только с чатом</option>
+                            <option [ngValue]="3" [selected]="courseForm.value.status_of_could_be_purchased_blank0_only_chat2_blank_or_chat3 == 3">Можно купить с чатом или без, на выбор на странице покупки</option>
+                        </select>
+                    </div>
+        
+                    <div>
+                        <label class="form-label" for="teacher_id">Преподаватель</label>
+                        <select class="form-control" formControlName="teacher_id">
+                            <option *ngFor="let teacherMicroViewModel of courseForm.value.teacherMicroViewModels" [ngValue]="teacherMicroViewModel.id" [selected]="teacherMicroViewModel.id == courseForm.value.teacher_id">
+                                {{ teacherMicroViewModel.name }}
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label" for="days">Срок дней на прохождение</label>
+                        <input type="number" class="form-control" formControlName="days" />
+                    </div>
+                    
+                    <div>
+                        <label class="form-label" for="price">Цена</label>
+                        <input type="number" class="form-control" formControlName="price" />
+                    </div>
+                    
+                    <div>
+                        <label class="form-label" for="price_fake">Цена перечеркнутая</label>
+                        <input type="number" class="form-control" formControlName="price_fake" />
+                    </div>
+                    
+                    <div>
+                        <label class="form-label" for="price_with_chat">Цена с чатом</label>
+                        <input type="number" class="form-control" formControlName="price_with_chat" />
+                    </div>
+                    
+                    <div>
+                        <label class="form-label" for="price_with_chat_fake">Цена с чатом перечеркнутая</label>
+                        <input type="number" class="form-control" formControlName="price_with_chat_fake" />
+                    </div>
+        
+        
+        
+                    <hr />
+        
+                    <button type="button" class="btn btn-success" [disabled]="isSaving" (click)="update()">Сохранить</button>
+                    <p class="warning">{{ warning }}</p>
+                    <p class="success">{{ success }}</p>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="course-content" role="tabpanel" aria-labelledby="course-content-tab">
+                <app-course-edit-tab-course-days #courseEditTabCourseDays [courseId]="courseId!"></app-course-edit-tab-course-days>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalCoursePosterDelete" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Удалить постер</h4>
+                <button type="button" #btnModalCoursePosterDeleteClose class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                Вы уверены, что хотите удалить постер курса?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" [disabled]="isPosterDeleting" (click)="posterDelete()">Удалить</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+
+        </div>
+    </div>
+</div>

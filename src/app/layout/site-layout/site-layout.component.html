@@ -1,0 +1,37 @@
+<div class="header">
+    <div class="left-panel">
+        <div class="short-info">
+            <p class="firstname"></p>
+            <p class="position"></p>
+        </div>
+    </div>
+    <div class="header-data">
+        <div class="row">
+            <div class="col-8">
+                <h3>{{ title }}</h3>
+            </div>
+            <div class="col-4">
+                <div class="logout">
+                    <button type="button" class="btn btn-danger btn-sm" (click)="logout()">Выйти</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="menu">
+    <div class="title">
+        <p>Навигация</p>
+    </div>
+    <ul>
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><i class="fa fa-home"></i> Рабочий стол</a></li>
+        <li><a routerLink="/profile" routerLinkActive="active"><i class="fa fa-user"></i> Профиль</a></li>
+        <li><a routerLink="/statements" routerLinkActive="active"><i class="fa fa-list"></i> Заявления</a></li>
+        ...
+
+        
+    </ul>
+</div>
+
+<div class="main">
+    <router-outlet></router-outlet>
+</div>

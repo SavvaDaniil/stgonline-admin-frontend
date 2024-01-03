@@ -1,0 +1,15 @@
+
+.status-warning {
+    color:yellow;
+}
+.status-danger {
+    color:red;
+}
+.status-success {
+    color:green;
+}
+
+.table img {
+    max-height: 120px;
+    margin: 12px 0;
+}

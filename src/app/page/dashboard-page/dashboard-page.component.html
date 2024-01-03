@@ -1,0 +1,109 @@
+
+<div class="row page dashboard">
+
+    <form [formGroup]="filterForm" class="col-12 row filter-block div-form">
+        <div class="col-12 col-lg-4 col-md-4 col-sm-12">
+            <form>
+                <div>
+                    <label class="form-label" for="filterDateFrom">С даты:</label>
+                    <input name="filterDateFrom" type="date" class="form-control" formControlName="filterDateFrom" />
+                </div>
+            </form>
+        </div>
+        <div class="col-12 col-lg-4 col-md-4 col-sm-12">
+            <form class="">
+                <div>
+                    <label class="form-label" for="filterDateTo">По дату:</label>
+                    <input name="filterDateTo" type="date" class="form-control" formControlName="filterDateTo" />
+                </div>
+            </form>
+        </div>
+        <div class="col-12 col-lg-4 col-md-4 col-sm-12">
+            <button type="button" class="btn btn-success" [disabled]="isLoading" (click)="searchAnalyticsDashboardData()">Обновить</button>
+        </div>
+    </form>
+
+    <app-system-loading-page *ngIf="isLoading"></app-system-loading-page>
+    <app-system-error-page *ngIf="isError" (tryAgain)="searchAnalyticsDashboardData()"></app-system-error-page>
+
+    <div class="col-12 row" style="padding:0;" *ngIf="!isLoading && !isError && analyticsDashboardSearchDTO !== null">
+        <div class="col-12 col-lg-3 col-md-3 col-sm-12">
+            <div class="analytics-block panel-success-alt">
+                <div class="icon"><i class="fa fa-ruble"></i></div>
+                <div>
+                    <p class="desc">Купленные доступы</p>
+                    <p class="value"><i class="fa fa-ruble"></i>{{ analyticsDashboardSearchDTO.purchases_amount }}</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-12 col-lg-3 col-md-3 col-sm-12">
+            <div class="analytics-block panel-info-alt">
+                <div class="icon"><i class="fa fa-users"></i></div>
+                <div>
+                    <p class="desc">Новых клиентов</p>
+                    <p class="value">{{ analyticsDashboardSearchDTO.new_users_count }}</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-12 col-lg-3 col-md-3 col-sm-12">
+            <div class="analytics-block panel-dark-alt">
+                <div class="icon"><i class="fa fa-pencil"></i></div>
+                <div>
+                    <p class="desc">Новых заявок</p>
+                    <p class="value">0</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-12 col-lg-3 col-md-3 col-sm-12">
+            <div class="analytics-block panel-warning-alt">
+                <div class="icon"><i class="fa fa-money"></i></div>
+                <div>
+                    <p class="desc">Прибыль</p>
+                    <p class="value"><i class="fa fa-ruble"></i>0</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-12 col-lg-3 col-md-3 col-sm-12">
+            <div class="analytics-block panel-dark-alt sm">
+                <div>
+                    <p class="desc">Доход от уроков<font class="right">позиций</font></p>
+                    <p class="value"><i class="fa fa-ruble"></i>{{ analyticsDashboardSearchDTO.purchase_lessons_amount }}<font class="right"><i class="fa fa-ruble"></i>{{ analyticsDashboardSearchDTO.purchase_lessons_count }}</font></p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-12 col-lg-3 col-md-3 col-sm-12">
+            <div class="analytics-block panel-dark-alt sm">
+                <div>
+                    <p class="desc">Доход от подписок<font class="right">позиций</font></p>
+                    <p class="value"><i class="fa fa-ruble"></i>{{ analyticsDashboardSearchDTO.purchase_subscriptions_amount }}<font class="right">{{ analyticsDashboardSearchDTO.purchase_subscriptions_count }}</font></p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-12 col-lg-3 col-md-3 col-sm-12">
+            <div class="analytics-block panel-dark-alt sm">
+                <div>
+                    <p class="desc">Доход от курсов<font class="right">позиций</font></p>
+                    <p class="value"><i class="fa fa-ruble"></i>{{ analyticsDashboardSearchDTO.purchase_courses_amount }}<font class="right">{{ analyticsDashboardSearchDTO.purchase_courses_count }}</font></p>
+                </div>
+            </div>
+        </div>
+    
+    
+        <div class="col-12 col-lg-3 col-md-3 col-sm-12">
+            <div class="analytics-block panel-dark-alt sm">
+                <div>
+                    <p class="desc">Просмотрено уроков<font class="right">курсов</font></p>
+                    <p class="value"><i class="fa fa-ruble"></i>0<font class="right">0</font></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

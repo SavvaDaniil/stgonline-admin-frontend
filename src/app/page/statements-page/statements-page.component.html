@@ -1,0 +1,87 @@
+<div class="row page statements">
+
+    <form [formGroup]="filterForm" class="col-12 row filter-block div-form">
+        <div class="col-12 col-lg-4 col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="form-label" for="filterDateFrom">С даты:</label>
+                <input name="filterDateFrom" type="date" class="form-control" formControlName="filterDateFrom" />
+            </div>
+        </div>
+        <div class="col-12 col-lg-4 col-md-4 col-sm-12">
+            <div class="form-group">
+                <label class="form-label" for="filterDateTo">По дату:</label>
+                <input name="filterDateTo" type="date" class="form-control" formControlName="filterDateTo" />
+            </div>
+        </div>
+        <div class="col-12 col-lg-8 col-md-8 col-sm-12">
+            <div class="form-group">
+                <input type="text" class="form-control" formControlName="search_query" placeholder="Поисковый запрос" />
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="button" class="btn btn-success" [disabled]="isLoading" (click)="search()">Обновить</button>
+        </div>
+    </form>
+
+    <app-system-loading-page *ngIf="isLoading"></app-system-loading-page>
+    <app-system-error-page *ngIf="isError" (tryAgain)="search()"></app-system-error-page>
+
+    <div *ngIf="!isLoading && !isError && (statementPreviewViewModels === null || (statementPreviewViewModels !== null && statementPreviewViewModels.length === 0))" class="col-12">
+        <p class="text-center">- записей не найдено -</p>
+    </div>
+
+    <div *ngIf="!isLoading && !isError && statementPreviewViewModels !== null && statementPreviewViewModels.length > 0" class="col-12">
+        
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Дата добавления</th>
+                    <th>Пользователь</th>
+                    <th>Статус оплаты</th>
+                    <th>Статус наставничества</th>
+                    <th>Статус рассмотрения</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let statementPreviewViewModel of statementPreviewViewModels">
+                    <td>{{ statementPreviewViewModel.id }}</td>
+                    <td>
+                        <p>
+                            {{statementPreviewViewModel.date_of_add}}
+                        </p>
+                    </td>
+                    <td>
+                        <p *ngIf="statementPreviewViewModel.userMicroViewModel !== null">
+                            {{ statementPreviewViewModel.userMicroViewModel.username }}
+                        </p>
+                    </td>
+                    <td>
+                        <p *ngIf="statementPreviewViewModel.is_payed == 1" class="status-success">Оплачено</p>
+                        <p *ngIf="statementPreviewViewModel.is_payed == 0" class="status-danger">Не оплачено</p>
+                    </td>
+                    <td>
+                        <p *ngIf="statementPreviewViewModel.is_need_curator === 1">Тариф “Базовый”</p>
+                        <p *ngIf="statementPreviewViewModel.is_need_curator === 2">Тариф “Продвинутый”</p>
+                        <p *ngIf="statementPreviewViewModel.is_need_curator === 3">Тариф “Углубленный”</p>
+                    </td>
+                    <td>
+                        <p *ngIf="statementPreviewViewModel.status == 1" class="status-success">Рассмотрена</p>
+                        <p *ngIf="statementPreviewViewModel.status == 0" class="status-danger">Не рассмотрена</p>
+                    </td>
+                    <td>
+                        <a routerLink="/statement/{{ statementPreviewViewModel.id }}" target="_blank">
+                            <button type="button" class="btn btn-info btn-sm">Редактировать</button>
+                        </a>
+                        <!--
+                        <button type="button" class="btn btn-danger btn-sm">Удалить</button>
+                        -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>

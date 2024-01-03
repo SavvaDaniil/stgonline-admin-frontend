@@ -1,0 +1,39 @@
+
+<app-system-loading-page *ngIf="isLoading"></app-system-loading-page>
+<app-system-error-page *ngIf="isError" (tryAgain)="getProfile()"></app-system-error-page>
+
+<div class="row page profile" *ngIf="!isLoading && !isError">
+    <div class="col-12">
+        <form [formGroup]="profileForm" (keypress)="clearWarning()">
+            <div>
+                <label class="form-label" for="formProfileUsername">Логин</label>
+                <input name="username" maxlength="216" type="email" class="form-control" formControlName="username" />
+                <small class="text-muted form-text"></small>
+            </div>
+            <div>
+                <label class="form-label" for="formProfilePosition">Имя</label>
+                <input name="firstname" maxlength="216" type="text" class="form-control" formControlName="firstname" />
+            </div>
+            <div>
+                <label class="form-label" for="formProfilePosition">Отображаемая должность</label>
+                <input name="position" maxlength="216" type="text" class="form-control" formControlName="position" />
+            </div>
+            <hr>
+            <div>
+                <label class="form-label" for="formNewPassword">Новый пароль</label>
+                <input name="passwordNew" type="password" class="form-control" formControlName="passwordNew" />
+            </div>
+            <div>
+                <label class="form-label" for="formPasswordNewAgain">Новый пароль еще раз</label>
+                <input name="passwordNewAgain" type="password" class="form-control" formControlName="passwordNewAgain" />
+            </div>
+            <div>
+                <label class="form-label" for="formBasicPassword">Текущий пароль</label>
+                <input name="passwordCurrent" type="password" class="form-control" formControlName="passwordCurrent" />
+            </div>
+            <button type="button" class="btn btn-success" (click)="update()" [disabled]="isSaving">Сохранить</button>
+            <p class="warning">{{ warning }}</p>
+            <p class="success">{{ success }}</p>
+        </form>
+    </div>
+</div>

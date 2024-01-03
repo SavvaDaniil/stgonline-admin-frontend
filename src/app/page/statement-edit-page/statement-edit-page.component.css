@@ -1,0 +1,13 @@
+
+.page.statement label {
+    margin-bottom: 4px;
+}
+.page.statement input, .page.statement select, .page.statement textarea {
+    margin-bottom: 15px;
+}
+.page.statement .warning {
+    margin-top: 15px;
+}
+.page.statement form button {
+    margin-bottom: 8px;
+}

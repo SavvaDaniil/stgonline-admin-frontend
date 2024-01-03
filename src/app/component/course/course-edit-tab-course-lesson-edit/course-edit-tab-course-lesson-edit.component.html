@@ -1,0 +1,43 @@
+
+
+<form *ngIf="courseLessonInfoViewModel !== null" [formGroup]="courseLessonForm" (change)="clearWarning()" (keypress)="clearWarning()">
+    
+    <label class="control-label">{{ course_lesson_index + 1 }}. Урок</label>
+        
+    <div class="form-group">
+        <select class="form-control" formControlName="lesson_id">
+            <option *ngFor="let lessonMicroViewModel of lessonMicroViewModels" [ngValue]="lessonMicroViewModel.id" [selected]="lessonMicroViewModel.id == courseLessonInfoViewModel.course_lesson_id">
+                {{lessonMicroViewModel.id}} - {{ lessonMicroViewModel.name }}
+            </option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="homework_status">Домашнее задание</label>
+        <select class="form-control" formControlName="homework_status">
+            <option [ngValue]="0" [selected]="courseLessonForm.value.homework_status === 0">Отсутствует</option>
+            <option [ngValue]="1" [selected]="courseLessonForm.value.homework_status === 1">Видео-файл</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="homework_text">Текст домашнего задания</label>
+        <textarea class="form-control" formControlName="homework_text" rows="4"></textarea>
+    </div>
+
+    <div class="row">
+        <div class="col-6" style="padding: 0;">
+            <button type="button" class="btn btn-sm btn-success" [disabled]="isLoading" (click)="update()">
+                Сохранить изменения
+            </button>
+            <p class="warning">{{ warning }}</p>
+            <p class="success">{{ success }}</p>
+        </div>
+        <div class="col-6 text-right" style="padding: 0;">
+            <button type="button" class="btn btn-sm btn-danger" [disabled]="isLoading" (click)="courseLessonDeletePrepare()">
+                Удалить урок
+            </button>
+        </div>
+        <div class="col-12">
+            <hr />
+        </div>
+    </div>
+</form>

@@ -1,0 +1,37 @@
+.page.statements .filter-block {
+    border: 1px solid #737373;
+    border-radius: 4px;
+    padding:10px;
+    margin-bottom: 25px;
+}
+.page.statements .form-group {
+    padding: 0;
+}
+.page.statements form {
+    margin-top: 12px;
+    padding-right: 12px;
+}
+.page.statements form input {
+    margin-right: 12px;
+    margin-bottom: 12px;
+}
+.page.statements .fitler-block .btn {
+    margin-top: 42px;
+}
+.page.statements .ps {
+    font-size: 12px;
+    margin-top:-12px;
+    margin-bottom: 12px;
+    color: #737373;
+}
+
+
+.status-warning {
+    color:yellow;
+}
+.status-danger {
+    color:red;
+}
+.status-success {
+    color:green;
+}

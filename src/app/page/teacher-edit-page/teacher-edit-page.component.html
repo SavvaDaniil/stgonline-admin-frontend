@@ -1,0 +1,113 @@
+
+<app-system-loading-page *ngIf="isLoading"></app-system-loading-page>
+<app-system-error-page *ngIf="isError" (tryAgain)="getForEdit()"></app-system-error-page>
+
+<div class="page row teacher" *ngIf="!isLoading && !isError">
+    <div class="col-12">
+
+        <form [formGroup]="teacherForm" (keypress)="clearWarning()">
+            
+            <div class="row">
+                <label class="form-label col-12" for="posterSrc">Постер</label>
+                <div class="col-12" *ngIf="teacherForm.value.poster_src !== null && teacherForm.value.poster_src !== ''">
+                    <img src="{{ baseDomain + teacherForm.value.poster_src }}" 
+                    class="img-fluid" alt="teacher-poster"
+                    />
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-danger" type="button" *ngIf="teacherForm.value.poster_src !== null && teacherForm.value.poster_src !== ''" data-bs-toggle="modal" data-bs-target="#modalTeacherPosterDelete">
+                        Удалить
+                    </button>
+                    <br />
+                    <input type="file" name="avatarFile" accept="image/*" (change)="setPoster($event)" />
+                </div>
+                
+            </div>
+
+            <hr />
+
+            <div>
+                <label class="form-label" for="formProfileUsername">ID</label>
+                <input type="number"[readOnly]="true" class="form-control" formControlName="id" />
+            </div>
+            
+            <div>
+                <label class="form-label" for="name">ФИО:</label>
+                <input type="text" class="form-control" formControlName="name" />
+            </div>
+            <div>
+                <label class="form-label" for="email">Почта для домашних заданий как наставника:</label>
+                <input type="text" class="form-control" formControlName="email" >
+            </div>
+            <div>
+                <label class="form-label" for="telegram">telegram:</label>
+                <input type="text" class="form-control" formControlName="telegram" />
+            </div>
+            <div>
+                <label class="form-label" for="instagram">instagram:</label>
+                <input type="text" class="form-control" formControlName="instagram" />
+            </div>
+            <div>
+                <label class="form-label" for="active">Отображать пользователям?</label>
+                <select class="form-control" formControlName="is_active">
+                    <option [ngValue]="false" [selected]="!teacherForm.value.is_active">Нет</option>
+                    <option [ngValue]="true" [selected]="teacherForm.value.is_active">Да</option>
+                </select>
+            </div>
+            
+            <hr />
+            
+            <div>
+                <label class="form-label" for="is_curator">Является куратором?</label>
+                <select class="form-control" formControlName="is_curator">
+                    <option [ngValue]="false" [selected]="!teacherForm.value.is_curator">Нет</option>
+                    <option [ngValue]="true" [selected]="teacherForm.value.is_curator">Да</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="form-label" for="price_tariff_1">Цена за тариф "Базовый":</label>
+                <input type="number" class="form-control" formControlName="price_tariff_1" />
+            </div>
+            
+            <div>
+                <label class="form-label" for="price_tariff_2">Цена за тариф "Продвинутый":</label>
+                <input type="number" class="form-control" formControlName="price_tariff_2" />
+            </div>
+            
+            <div>
+                <label class="form-label" for="price_tariff_3">Цена за тариф "Углубленный":</label>
+                <input type="number" class="form-control" formControlName="price_tariff_3" />
+            </div>
+
+            <hr />
+
+            <button type="button" class="btn btn-success" [disabled]="isSaving" (click)="update()">Сохранить</button>
+            <p class="warning">{{ warning }}</p>
+            <p class="success">{{ success }}</p>
+        </form>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalTeacherPosterDelete" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Удалить постер</h4>
+                <button type="button" #btnModalTeacherPosterDeleteClose class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                Вы уверены, что хотите удалить постер преподавателя?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" [disabled]="isPosterDeleting" (click)="posterDelete()">Удалить</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+
+        </div>
+    </div>
+</div>

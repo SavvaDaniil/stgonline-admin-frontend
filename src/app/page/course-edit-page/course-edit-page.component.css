@@ -1,0 +1,25 @@
+
+.page.course img {
+    max-height: 200px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+}
+.page.course form {
+    margin-top: 15px;
+}
+.page.course input, .page.course select, .page.course textarea {
+    margin-bottom: 15px;
+}
+.page.course .warning {
+    margin-top: 15px;
+}
+.page.course form button {
+    margin-bottom: 8px;
+}
+
+.page.course .nav-tabs .nav-link {
+    color:#f5f5f5;
+}
+.page.course .nav-tabs .nav-link.active {
+    color:#252525;
+}
